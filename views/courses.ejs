@@ -1,0 +1,148 @@
+<%- include('header') -%>
+
+    
+<div class="container">
+  <button
+    class="btn btn-primary float-right m-2 add-btn"
+    data-toggle="modal"
+    data-target="#addcourse"
+  >
+    Add Course
+  </button>
+  <br />
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Courses</th>
+        <th>action</th>
+        <th>Option</th>
+      </tr>
+    </thead>
+    <tbody id="act">
+      <% for(var i=-0 ; i < result_courses.length ; i++){ %>
+      <tr>
+        <td><%= result_courses[i].course %></td>
+        <td>
+          <button
+            class="btn btn-danger delete-btn"
+            data-id="<%= result_courses[i].id %>"
+          >
+            Delete
+          </button>
+        </td>
+        <td>
+          <button
+            class="btn btn-success success-btn"
+            data-id="<%= result_courses[i].id %>"
+          >
+            Edit
+          </button>
+        </td>
+        <%}%>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="modal fade" id="addcourse" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Course Details:</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form type="text" action="/courses" id="crs" method="POST">
+          <div class="form-group">
+            <label for="course1">Course:</label>
+            <input type="hidden" class="form-control" id="id" name="id" />
+            <input
+              type="text"
+              class="form-control"
+              id="course1"
+              name="course"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          id="save"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javaScript">
+     var is_edit = false;
+  $(document).ready(function() {
+    $(".add-btn").on("click", function() {
+      $("input[name=course]").val("");
+      $("input[name=course_id]").val("");
+    });
+    $("#save").on("click", function(e) {
+      var type = "PUT";
+      if (is_edit) {
+        type = "PUT";
+      } else {
+        type = "POST";
+      }
+      e.preventDefault();
+      $.ajax({
+        type: type,
+        url: "/courses",
+        data: $("#crs").serialize(),
+        dataType: "text",
+        success: function(resultData) {
+          swal("Thank You!", "Successfully Submitted", "success");
+          setTimeout(function() {
+            location.href = "/courses";
+          }, 2000);
+        }
+      });
+    });
+  });
+  $(document).on("click", ".delete-btn", function() {
+    var course_id = $(this).data("id");
+    $.ajax({
+      type: "DELETE",
+      url: `/courses/${course_id}`,
+      dataType: "json",
+      success: function(resultData) {
+        swal("Thank You!", "Successfully delete", "success");
+        setTimeout(function() {
+          location.href = "/courses";
+        }, 2000);
+      }
+    });
+    $(this)
+      .closest("tr")
+      .remove();
+  });
+
+  $(".success-btn").on("click", function() {
+    is_edit = true;
+    $("input[name=id]").val($(this).data("id"));
+    let course_id = $(this).data("id");
+    $.ajax({
+      type: "GET",
+      url: `/courses/${course_id}`,
+      dataType: "json",
+      success: function(resultData) {
+        if (resultData.course) {
+          $("input[name=course]").val(resultData.course.course);
+          $("#addcourse").modal("show");
+        }
+      }
+    });
+    console.log(is_edit);
+  });
+</script>
+<%- include('footer'); -%>

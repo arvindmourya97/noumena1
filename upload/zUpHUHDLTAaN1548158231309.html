@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<body>
+<form name="Registration" action="#" onsubmit="return validation()">
+    Username:<input type="text"  id="name"/>
+    <br>
+    Password:<input type="password"  id="password" />
+    <br>
+    Email Id:<input type="email"  id="email" requried />
+    <br><br>
+    <p>I agree all the terms and conditions</p>
+
+    
+    
+<input type="checkbox" name="thebox" onClick="validator()"/>
+<!---<input type="button"  value="I agree" onClick="validator()" />  -->
+<br><br>
+<input type="submit" value="submit" />
+</form>
+<div id="input"></div>
+<script type="text/javascript">
+function validation()
+{
+    var name=document.getElementById('name').value;
+    var password=document.getElementById('password').value;
+    var email=document.getElementById('email').value;
+
+    if(name=="" || password=="" || email=="")
+    {
+        document.getElementById('input').innerHTML="All Fields are Compulsry";
+        return false;
+    }
+    else if(name.length<=4)
+    {
+        document.getElementById('input').innerHTML="Name must be atleast 4 characters";
+        return false;
+    }
+    else if(password.length<=4)
+    {
+        document.getElementById('input').innerHTML="Password must be atleast 4 characters";
+        return false;
+    }
+    else 
+    {   
+        return true;       
+    }
+        validatior();
+}
+function validator(){
+
+     if(document.Registration.thebox.checked)
+     {
+
+        alert("successfully registered");}
+    else
+    {
+        alert("check all the fields have selected");
+    }
+}
+</script>
+</body>
+</html>

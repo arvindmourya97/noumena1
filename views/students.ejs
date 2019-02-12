@@ -1,0 +1,253 @@
+<%- include('header') -%>
+<button
+  class="btn btn-primary float-right m-2"
+  data-toggle="modal"
+  data-target="#addstud"
+>
+  Add Student
+</button>
+<br />
+<div>
+  <table
+    class="table table-striped table-bordered"
+    style="width:100%"
+    id="look"
+  >
+    <thead>
+      <tr>
+        <th>student_name</th>
+        <th>email-ID</th>
+        <th>college_name</th>
+        <th>course</th>
+        <th>mobile_no.</th>
+        <th>Action</th>
+        <th>Option</th>
+        <th>downlodefile</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i < results_stud.length; i++) { %>
+      <tr>
+        <td><%= results_stud[i].student_name %></td>
+        <td><%= results_stud[i].email_id%></td>
+        <td><%= results_stud[i].college_name%></td>
+        <td><%= results_stud[i].course %></td>
+        <td><%= results_stud[i].mobile_no%></td>
+
+        <td>
+          <button
+            class="btn btn-danger delete-btn"
+            data-id="<%= results_stud[i].student_id %>"
+          >
+            Delete
+          </button>
+        </td>
+        <td>
+          <button
+            class="btn btn-success success-btn"
+            onclick="openModal()"
+            data-id="<%= results_stud[i].id %>"
+          >
+            Edit
+          </button>
+        </td>
+        <td> <a target="blank" href="/<%=results_stud[i].filename %>" >
+          <%= results_stud[i].originalfile %></a>
+         </td>
+        <% } %>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="addstud" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form
+        type="text"
+        action="/students"
+        enctype="multipart/form-data"
+        id="stud"
+        method="POST"
+      >
+        <div class="modal-header">
+          <h4 class="modal-title">Student Details:</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Student name:</label>
+            <input
+              type="hidden"
+              class="form-control"
+              id="student_id"
+              name="student_id"
+            />
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="student_name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">email-ID:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="email"
+              name="email_id"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="college">college:</label>
+            <select
+              type="text"
+              class="form-control"
+              id="college"
+              name="college_id"
+            >
+              <% for(var i=0; i < colleges.length; i++) { %>
+              <option value="<%= colleges[i].college_id %>"
+                ><%= colleges[i].college_name %></option
+              >
+              <% } %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="course">course:</label>
+            <select
+              type="text"
+              class="form-control"
+              id="course"
+              name="course_id"
+            >
+              <% for(var i=0; i < courses.length; i++) { %>
+              <option value="<%= courses[i].course_id %>"
+                ><%= courses[i].course %></option
+              >
+              <% } %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="mobile">mobile_no:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="mobile"
+              name="mobile_no"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="filename" class="col-form-label">fileuplode</label>
+            <input type="file" name="filename" /><br />
+          </div>
+          <button type="submit" class="btn btn-primary">addstudent</button>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal"
+            id="save"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="text/javaScript">
+   /*var is_edit = false;
+  $(document).ready(function() {
+  $(".add-btn").on("click", function() {
+    $("input[name=student_name]").val("");
+    $("input[name=email_id]").val("");
+    $("input[name=college_id]").val("");
+    $("input[name=course_id]").val("");
+    $("input[name=mobile_no]").val("");
+    $("input[name=filename]").val("");
+
+  });
+  $("#save").on("click", function(e) {
+    var type = "PUT";
+    if (is_edit) {
+      type = "PUT";
+    } else {
+      type = "POST";
+    }
+    e.preventDefault();
+    $.ajax({
+      type: type,
+      url: "/students",
+      data: $("#stud").serialize(),
+      dataType: "text",
+      success: function(resultData) {
+        swal("Thank You!", "Successfully Submitted", "success");
+        setTimeout(function() {
+          location.href = "/students";
+        }, 2000);
+      }
+    });
+  });
+  });*/
+</script>
+<script type="text/javaScript">
+
+  $(document).ready(function() {
+    $("#look").DataTable();
+  } );
+</script>
+<script>
+  $(document).on("click", ".delete-btn", function() {
+    var student_id = $(this).data("id");
+    $.ajax({
+      type: "DELETE",
+      url: `/students/${student_id}`,
+      dataType: "json",
+      success: function(resultData) {
+        swal("Thank You!", "Successfully delete", "success");
+        setTimeout(function() {
+          location.href = "/students";
+        }, 2000);
+      }
+    });
+    $(this)
+      .closest("tr")
+      .remove();
+  });
+
+  $(".success-btn").on("click", function() {
+    is_edit = true;
+    $("input[name=student_id]").val($(this).data("id"));
+    let student_id = $(this).data("id");
+    $.ajax({
+      type: "GET",
+      url: `/students/${student_id}`,
+      dataType: "json",
+      success: function(resultData) {
+        console.log(resultData);
+        if (resultData.student.student_name) {
+          console.log(resultData);
+          $("input[name=student_name]").val(resultData.student.student_name);
+          $("input[name=email_id]").val(resultData.student.email_id);
+          $("select[name= college_id]").val(resultData.student.college_id);
+          $("select[name=course_id]").val(resultData.student.course_id);
+          $("input[name=mobile_no]").val(resultData.student.mobile_no);
+          $("#addstud").modal("show");
+        }
+      }
+    });
+    console.log(is_edit);
+  });
+</script>
+
+<%- include('footer'); -%>

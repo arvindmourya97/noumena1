@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CSS Website Layout</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        margin: 0;
+      }
+      .header {
+        background-color: #232f3e;
+      }
+      .top-bar {
+        padding: 24px;
+      }
+      .top-bar .brand,
+      .top-bar .search-wrapper,
+      .top-bar .offer-wrapper {
+        float: left;
+      }
+      .top-bar .brand {
+        background-image: url(https://images-eu.ssl-images-amazon.com/images/G/31/gno/sprites/nav-sprite-global_bluebeacon-V3-1x_optimized._CB516557522_.png);
+        background-position: 0 1000px;
+        background-repeat: repeat-x;
+        background-position: -10px -51px;
+        width: 97px;
+        height: 30px;
+      }
+      .search-wrapper {
+        width: calc(100% - 520px);
+        padding-left: 20px;
+        margin-top: -5px;
+      }
+      .search-wrapper > select {
+        width: 100px;
+        padding: 0px;
+        margin: 0px;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        font-size: 17px;
+        line-height: 1;
+        border: 0;
+        border-radius: 5px 0px 0px 5px;
+        height: 37px;
+        background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png)
+          no-repeat right #ddd;
+        background-position-x: right;
+        -webkit-appearance: none;
+        background-position-x: 75px;
+      }
+      .search-wrapper > input {
+        
+    width: calc(100% - 116px);
+    font-size: 18px;
+    line-height: 1;
+    border: 0;
+    border-radius: 0px 5px 5px 0px;
+    height: 39px;
+    margin-top: 1px;
+
+      }
+      .offer-wrapper {
+        background-image: url(https://images-eu.ssl-images-amazon.com/images/G/31/AmazonVideo/2018/SingleTitle/TheFirst/400x39-SWM_With-Disclaimer._CB459394498_.jpg);
+        width: 400px;
+        height: 39px;
+        overflow: hidden;
+        position: relative;
+      }
+      @media screen and (max-width: 896px) {
+        .search-wrapper {
+          width: 362px;
+        }
+        .search-wrapper > input {
+          width: 250px;
+        }
+        .offer-wrapper {
+          display: none;
+        }
+      }
+      @media screen and (max-width: 620px) {
+        .search-wrapper {
+          width: 162px;
+        }
+        .search-wrapper > input {
+          width: 150px;
+        }
+      }
+      .topnav {
+        padding: 0px;
+      }
+      .topnav {
+  overflow: hidden;
+  background-color: #333;
+  width:100%;
+}
+
+/* Style the topnav links */
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+.design {
+    background-color: #232f3e;
+    height: 200px;
+}
+.design{background-image: url(https://images-eu.ssl-images-amazon.com/images/G/31/img18/Wireless/CEEX/Huawei/Holiday2018/revlp/Christmas-landing-page-1500-PC_01._CB458415551_.jpg);
+    }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="top-bar">
+        <div class="brand"></div>
+        <div class="search-wrapper">
+          <select
+            ><option>A1</option
+            ><option>A2</option> </select
+          ><input type="text" />
+        </div>
+        <div class="offer-wrapper"></div>
+      </div>
+      <div class="topnav">
+            <a href="#">Link</a>
+            <a href="#">Link</a>
+            <a href="#">Link</a>
+          </div>
+          
+      </div>
+    </div>
+    <div class="design">
+    </div>
+    <div class="gallery">
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,189 @@
+<%- include('header') -%>
+<div class="container">
+  <button
+    class="btn btn-primary float-right m-2 add-btn"
+    data-toggle="modal"
+    data-target="#addclg"
+  >
+    Add College
+  </button>
+  <br />
+  <table class="table">
+    <thead>
+      <tr>
+        <th>College_Name</th>
+        <th>Address</th>
+        <th>Action</th>
+        <th>Option</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i < results_clg.length; i++) { %>
+      <tr>
+        <td><%= results_clg[i].college_name %></td>
+        <td><%= results_clg[i].Address %></td>
+        <td>
+          <button
+            class="btn btn-danger delete-btn"
+            data-id="<%= results_clg[i].college_id %>"
+          >
+            Delete
+          </button>
+        </td>
+        <td>
+          <button
+            class="btn btn-success success-btn"
+            data-id="<%= results_clg[i].college_id %>"
+          >
+            Edit
+          </button>
+        </td>
+        <% } %>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="modal fade" id="addclg" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">College Details:</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <form type="text" action="/colleges" id="clg" method="POST">
+          <div class="form-group">
+            <label for="name">College name:</label>
+            <input
+              type="hidden"
+              class="form-control"
+              id="college_id"
+              name="college_id"
+            />
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="college_name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="address">Address:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="address"
+              name="Address"
+            />
+          </div>
+          <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          id="save"
+        >
+          Save
+        </button>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<script type="text/javaScript">
+  var is_edit = false;
+    $(document).ready(function() {
+
+      $('.add-btn').on('click', function(){
+          $('input[name=college_name]').val('');
+          $('input[name=Address]').val('');
+          $("input[name=college_id]").val('');
+         
+      })
+      $("#save").on("click", function(e) {
+
+        e.preventDefault();
+        var type = 'PUT';
+        console.log(is_edit)
+        if(is_edit){
+          type = 'PUT';
+        } else {
+          type = 'POST'
+        }
+        $.ajax({
+          type: type,
+          url: "/colleges",
+          data: $("#clg").serialize(),
+          dataType: "text",
+          success: function(resultData) {
+            //swal("Thank You!", "Successfully Submitted", "success");
+            setTimeout(function() {
+              location.href = "/colleges";
+            }, 2000);
+          }
+        });
+      });
+    });
+    $(document).on("click", ".delete-btn", function() {
+      var college_id = $(this).data("id");
+      $.ajax({
+        type: "DELETE",
+        url: `/colleges/${college_id}`,
+        dataType: "json",
+        success: function(resultData) {
+         swal("Thank You!", "Successfully delete", "success");
+          setTimeout(function() {
+            location.href = "/colleges";
+          }, 2000);
+        }
+      });
+      $(this)
+        .closest("tr")
+        .remove();
+    });
+    // $(".success-btn").on("click", function() {
+    //   is_edit = true;
+    //   $("input[name=college_id]").val($(this).data("id"));
+    //   var college = $(this)
+    //     .parents("tr")
+    //     .find("td:eq(0)")
+    //     .html();
+    //   var address = $(this)
+    //     .parents("tr")
+    //     .find("td:eq(1)")
+    //     .html();
+    //   $("input[name=college_name]").val(college);
+    //   $("input[name=Address]").val(address);
+    //   $("input[name=college_id]").val($(this).data("id"));
+    //   $("#addclg").modal("show");
+    //   console.log(is_edit)
+    // });
+
+
+
+    $(".success-btn").on("click", function() {
+    is_edit = true;
+    $("input[name=college_id]").val($(this).data("id"));
+    let college_id = $(this).data("id");
+    $.ajax({
+      type: "GET",
+      url: `/colleges/${college_id}`,
+      dataType: "json",
+      success: function(resultData) {
+        console.log(resultData)
+        if (resultData.college.college_name) {
+          $("input[name=college_name]").val(resultData.college.college_name);
+          $("input[name=Address]").val(resultData.college.Address);
+          $("#addclg").modal("show");
+          
+        }
+      }
+    });
+    console.log(is_edit);
+  });
+</script>-->
+
+  
+<%- include('footer'); -%>
